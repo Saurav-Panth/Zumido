@@ -1,30 +1,27 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Logging in with:", { username, password });
+    const storedUserData = JSON.parse(localStorage.getItem("userData"));
 
-    if(username === "Ankush" && password === "hayato"){
+    if (storedUserData && storedUserData.username === username && storedUserData.password === password) {
       navigate("/product");
+    } else {
+      alert("Incorrect username or password");
     }
-    else{
-      alert("WRONG USER-NAME ")
-    }
-
   };
 
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>ZUMIDO</h2>
-
         <input
           type="text"
           placeholder="Username"
@@ -32,7 +29,6 @@ const Login = () => {
           onChange={(e) => setUsername(e.target.value)}
           required
         />
-
         <input
           type="password"
           placeholder="Password"
@@ -40,11 +36,9 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-
         <button type="submit">Login</button>
-
         <p>
-          Don't have an account? <a href="#">Sign up</a>
+          Don't have an account? <a href="/signup">Sign up</a>
         </p>
       </form>
     </div>
